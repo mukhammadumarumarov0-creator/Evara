@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block main %}
+    <!--=============== MAIN ===============-->
+    <main class="main">
+      <!--=============== HOME ===============-->
+     {% include "components/home.html" %}
+
+      <!--=============== CATEGORIES ===============-->
+      {% include "components/category.html" %}
+    
+      <!--=============== PRODUCTS ===============-->
+     {% include "components/products.html" %}
+
+      <!--=============== DEALS ===============-->
+     {% include "components/deals.html" %}
+
+      <!--=============== NEW ARRIVALS ===============-->
+     {% include "components/new_arrivals.html" %}
+
+      <!--=============== SHOWCASE ===============-->
+     {% include "components/showcase.html" %}
+
+      <!--=============== NEWSLETTER ===============-->
+    {% include "components/letter.html" %}
+    </main>
+{% endblock main %}

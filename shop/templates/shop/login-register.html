@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block main %}
+  <!--=============== MAIN ===============-->
+  <main class="main">
+    <!--=============== BREADCRUMB ===============-->
+   {% include "components/breadcrumb.html" %}
+
+    <!--=============== LOGIN-REGISTER ===============-->
+   {% include "components/login-regester.html" %}
+
+    <!--=============== NEWSLETTER ===============-->
+    {% include "components/letter.html" %}
+  </main>
+
+{% endblock main %}

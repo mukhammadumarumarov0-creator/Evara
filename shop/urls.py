@@ -1,0 +1,18 @@
+from django.urls import path,include
+from .views import dashboard,details,shop,accounts,cart,check_out,compare,login_regester,wish_list
+
+urlpatterns = [
+    path("",dashboard,name="dashboard"),
+    path("details/",details,name="details"),
+    path("shop/",shop,name="shop"),
+    path("accounts/",accounts,name="account"),
+    path("cart/",cart,name="cart"),
+    path("checkout/",check_out,name="checkout"),
+    path("compare/",compare,name="compare"),
+    path("register/",login_regester,name="register"),
+    path("wishlist/",wish_list,name="wishlist"),
+
+
+
+
+]
