@@ -508,6 +508,10 @@ table {
   -o-transition: all 0.2s var(--transition);
 }
 
+
+
+
+
 .product__banner {
   padding: 0.625rem 0.75rem 0.75rem;
 }

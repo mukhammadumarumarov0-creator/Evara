@@ -1,7 +1,19 @@
 from django.shortcuts import render
+from .models import Category,Product
 
 def dashboard(request):
-    return render(request,"shop/index.html")
+
+    category=Category.objects.all()
+    product=Product.objects.all()
+
+    for p in product:
+        if p.discount>0:
+            p.discount=p.price-(p.price*p.discount/100)
+
+    categories={"category":category,"product":product}
+
+    return render(request,"shop/index.html" ,categories)
+
 
 def details(request):
     return render(request,"shop/details.html")
