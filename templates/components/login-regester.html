@@ -2,47 +2,23 @@
     <div class="login-register__container container grid">
       <div class="login">
         <h3 class="section__title">Login</h3>
-        <form class="form grid">
-          <input
-            type="email"
-            placeholder="Your Email"
-            class="form__input"
-          />
-          <input
-            type="password"
-            placeholder="Your Password"
-            class="form__input"
-          />
-          <div class="form__btn">
-            <button class="btn">Login</button>
-          </div>
-        </form>
-      </div>
-      <div class="register">
-        <h3 class="section__title">Create an Account</h3>
-        <form class="form grid">
+        <form class="form grid" method="post">
+         {% csrf_token %}
+
           <input
             type="text"
-            placeholder="Username"
+            placeholder="Your Username"
             class="form__input"
-          />
-          <input
-            type="email"
-            placeholder="Your Email"
-            class="form__input"
+            name="username"
           />
           <input
             type="password"
             placeholder="Your Password"
             class="form__input"
-          />
-          <input
-            type="password"
-            placeholder="Confirm Password"
-            class="form__input"
+            name="password"
           />
           <div class="form__btn">
-            <button class="btn">Submit & Register</button>
+            <button class="btn" type="submit">Login</button>
           </div>
         </form>
       </div>

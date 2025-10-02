@@ -11,6 +11,7 @@
     <div class="tab__items">
       <div class="tab__item active-tab" content id="featured">
         <div class="products__container grid">
+
           {% for p in product %}
           <div class="product__item">
             <div class="product__banner">
@@ -75,7 +76,6 @@
               </a>
             </div>
           </div>
-
           {% endfor %}
           
 
@@ -83,6 +83,7 @@
         </div>
       </div>
       <div class="tab__item" content id="popular">
+        
         <div class="products__container grid">
 
           {% for p in product %}

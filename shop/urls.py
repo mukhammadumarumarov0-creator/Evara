@@ -1,5 +1,5 @@
 from django.urls import path,include
-from .views import dashboard,details,shop,accounts,cart,check_out,compare,login_regester,wish_list
+from .views import dashboard,details,shop,accounts,cart,check_out,compare,login_regester,wish_list,logout_user,create_account
 
 urlpatterns = [
     path("",dashboard,name="dashboard"),
@@ -10,6 +10,8 @@ urlpatterns = [
     path("checkout/",check_out,name="checkout"),
     path("compare/",compare,name="compare"),
     path("register/",login_regester,name="register"),
+    path("create_account/",create_account,name="create_account"),
+    path("logout/",logout_user,name="logout_user"),
     path("wishlist/",wish_list,name="wishlist"),
 
 
