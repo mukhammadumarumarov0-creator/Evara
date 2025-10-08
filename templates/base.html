@@ -13,7 +13,7 @@
     <link
       rel="stylesheet"
       href="https://cdn-uicons.flaticon.com/2.0.0/uicons-regular-straight/css/uicons-regular-straight.css"  />
-    <link href="{% static "img/logo.png" %}" rel="icon" class='icon' style='border-radius : 50 px ;'>
+    <link href="{% static 'img/logo.png' %}" rel="icon" class='icon' style='border-radius : 50 px ;'>
 
   
 
@@ -24,7 +24,7 @@
     />
 
     <!--=============== CSS ===============-->
-    <link rel="stylesheet" href="{% static "css/styles.css" %}" />
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
 
     <title>Ecommerce Website</title>
   </head>
@@ -37,17 +37,17 @@
 
             <a href="" class="header__top-action">
               {{request.user.username}} </a>
-            <a href="{% url "logout_user" %}" class="header__top-action">
-                Logout </a>
+            <a href="{% url 'logout_user' %}" class="header__top-action">
+                Chiqish </a>
 
             {% else %}
               <div>
-                <a href="{% url "register" %}" class="header__top-action" >
-                  Login  |
+                <a href="{% url 'register' %}" class="header__top-action" >
+                  Kirish  |
                   </a>
                   
-                  <a href="{% url "create_account" %}" class="header__top-action">
-                   Sign Up
+                  <a href="{% url 'create_account' %}" class="header__top-action">
+                   Ro'yhatdan O'tish
                    </a>
               </div>
             {% endif %}
@@ -55,10 +55,10 @@
       </div>
 
       <nav class="nav container">
-        <a href="{% url "dashboard" %}" class="nav__logo">
+        <a href="{% url 'dashboard' %}" class="nav__logo">
           <img
             class="nav__logo-img"
-            src={% static "img/logo.svg" %}
+            src="{% static 'img/logo.svg' %}"
             alt="website logo"
           />
         </a>
@@ -66,16 +66,13 @@
           <ul class="nav__list">
             {% if request.user.is_authenticated%}
                   <li class="nav__item">
-                    <a href="{% url "dashboard" %}" class="nav__link">Home</a>
+                    <a href="{% url 'dashboard' %}" class="nav__link {% if request.path == '/' %} active-link {% endif %}">Bosh Sahifa</a>
                   </li>
                   <li class="nav__item">
-                    <a href="{% url "shop" %}" class="nav__link">Shop</a>
+                    <a href="{% url 'shop' %}" class="nav__link {% if request.path == '/shop/' %} active-link {% endif %}" >Mahsulotlar</a>
                   </li>
                   <li class="nav__item">
-                    <a href="{% url "account" %}" class="nav__link">My Account</a>
-                  </li>
-                  <li class="nav__item">
-                    <a href="{% url "compare" %}" class="nav__link">Compare</a>
+                    <a href="{% url 'account' %}" class="nav__link {% if request.path == '/accounts/' %} active-link {% endif %}">Profilim</a>
                   </li>
           {% endif %}
             <li class="nav__item">
@@ -84,7 +81,7 @@
               <div class="header__search">
                 <input
                   type="text"
-                  placeholder="Search For Items..."
+                  placeholder="Qidiruv..."
                   class="form__input"
                 />
                 <button class="search__btn">
@@ -93,12 +90,12 @@
               </div>
             </div>
             <div class="header__user-actions">
-              <a href="wishlist.html" class="header__action-btn" title="Wishlist">
+              <a href="{% url 'wishlist' %}" class="header__action-btn" title="Wishlist">
                 <img src={% static "img/icon-heart.svg" %} alt="image" />
                 <span class="count">3</span>
               </a>
-              <a href="cart.html" class="header__action-btn" title="Cart">
-                <img src={% static "img/icon-cart.svg" %} alt="image" />
+              <a href="{% url 'cart' %}" class="header__action-btn" title="Cart">
+                <img src={% static 'img/icon-cart.svg' %} alt="image" />
                 <span class="count">3</span>
               </a>
             </div>

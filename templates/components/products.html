@@ -1,12 +1,6 @@
 {% load static %}
 <section class="products container section">
-    <div class="tab__btns">
-      <span class="tab__btn active-tab" data-target="#featured"
-        >Featured</span
-      >
-      <span class="tab__btn" data-target="#popular">Popular</span>
-      <span class="tab__btn" data-target="#new-added">New Added</span>
-    </div>
+   
 
     <div class="tab__items">
       <div class="tab__item active-tab" content id="featured">
@@ -15,7 +9,7 @@
           {% for p in product %}
           <div class="product__item">
             <div class="product__banner">
-              <a href="{% url "details" %}" class="product__images">
+              <a href="{% url 'details' p.id %}" class="product__images">
                 <img
                   src={{p.image.url}}
                   alt=""
@@ -42,11 +36,13 @@
                   <i class="fi fi-rs-shuffle"></i>
                 </a>
               </div>
-              <div class="product__badge light-pink">Hot</div>
+              {% if p.discount > 0 %}
+                 <div class="product__badge light-pink">-{{p.discount}}%</div>
+              {% endif %}
             </div>
             <div class="product__content">
               <span class="product__category">{{p.category}}</span>
-              <a href="{% url "details" %}">
+              <a href="{% url 'details' p.id %}">
                 <h3 class="product__title">{{p.name}}</h3>
               </a>
               <div class="product__rating">
@@ -62,7 +58,7 @@
                   <span class="new__price">${{p.price}}</span>
                 {% else %}
 
-                   <span class="new__price">${{p.discount}}</span>
+                   <span class="new__price">${{p.discount_price}}</span>
                    <span class="old__price">${{p.price}}</span>
                 
                 {% endif %}
@@ -77,153 +73,11 @@
             </div>
           </div>
           {% endfor %}
-          
-
 
         </div>
       </div>
-      <div class="tab__item" content id="popular">
-        
-        <div class="products__container grid">
-
-          {% for p in product %}
-
-          <div class="product__item">
-            <div class="product__banner">
-              <a href="details.html" class="product__images">
-                <img
-                  src={{p.image.url}}
-                  alt=""
-                  class="product__img default"
-                />
-                <img
-                  src={{p.image.url}}
-                  alt=""
-                  class="product__img hover"
-                />
-              </a>
-              <div class="product__actions">
-                <a href="#" class="action__btn" aria-label="Quick View">
-                  <i class="fi fi-rs-eye"></i>
-                </a>
-                <a
-                  href="#"
-                  class="action__btn"
-                  aria-label="Add to Wishlist"
-                >
-                  <i class="fi fi-rs-heart"></i>
-                </a>
-                <a href="#" class="action__btn" aria-label="Compare">
-                  <i class="fi fi-rs-shuffle"></i>
-                </a>
-              </div>
-              <div class="product__badge light-pink">Popular</div>
-            </div>
-            <div class="product__content">
-              <span class="product__category">{{p.category}}</span>
-              <a href="{% url "details" %}">
-                <h3 class="product__title">{{p.name}}</h3>
-              </a>
-              <div class="product__rating">
-                <i class="fi fi-rs-star"></i>
-                <i class="fi fi-rs-star"></i>
-                <i class="fi fi-rs-star"></i>
-                <i class="fi fi-rs-star"></i>
-                <i class="fi fi-rs-star"></i>
-              </div>
-              <div class="product__price flex">
-                {% if p.discount == 0 %}
-                  <span class="new__price">${{p.price}}</span>
-                {% else %}
-                    <span class="new__price">${{p.discount}}</span>
-                    <span class="old__price">${{p.price}}</span>
-                {% endif %}
-              </div>
-              <a
-                href="#"
-                class="action__btn cart__btn"
-                aria-label="Add To Cart"
-              >
-                <i class="fi fi-rs-shopping-bag-add"></i>
-              </a>
-            </div>
-          </div>
-          {% endfor %}
-
-        </div>
-      </div>
-
       <div class="tab__item" content id="new-added">
         <div class="products__container grid">
-
-          {% for p in product  %}
-
-          <div class="product__item">
-            <div class="product__banner">
-              <a href="details.html" class="product__images">
-                <img
-                  src={{p.image.url}}
-                  alt=""
-                  class="product__img default"
-                />
-                <img
-                  src={{p.image.url}}
-                  alt=""
-                  class="product__img hover"
-                />
-              </a>
-              <div class="product__actions">
-                <a href="#" class="action__btn" aria-label="Quick View">
-                  <i class="fi fi-rs-eye"></i>
-                </a>
-                <a
-                  href="#"
-                  class="action__btn"
-                  aria-label="Add to Wishlist"
-                >
-                  <i class="fi fi-rs-heart"></i>
-                </a>
-                <a href="#" class="action__btn" aria-label="Compare">
-                  <i class="fi fi-rs-shuffle"></i>
-                </a>
-              </div>
-              <div class="product__badge light-pink">New</div>
-            </div>
-            <div class="product__content">
-              <span class="product__category">{{p.category}}</span>
-              <a href="{% url "details" %}">
-                <h3 class="product__title">{{p.name}}</h3>
-              </a>
-              <div class="product__rating">
-                <i class="fi fi-rs-star"></i>
-                <i class="fi fi-rs-star"></i>
-                <i class="fi fi-rs-star"></i>
-                <i class="fi fi-rs-star"></i>
-                <i class="fi fi-rs-star"></i>
-              </div>
-              <div class="product__price flex">
-                {% if p.discount == 0 %}
-                  <span class="new__price">${{p.price}}</span>
-                {% else %}
-                  <span class="new__price">${{p.discount}}</span>
-                  <span class="old__price">${{p.price}}</span>
-                {% endif %}
-               
-              </div>
-              <a
-                href="#"
-                class="action__btn cart__btn"
-                aria-label="Add To Cart"
-              >
-                <i class="fi fi-rs-shopping-bag-add"></i>
-              </a>
-            </div>
-          </div>
-          {% endfor %}
-
-       
-        
-
         </div>
       </div>
     </div>

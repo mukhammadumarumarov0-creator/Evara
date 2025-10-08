@@ -1,11 +1,11 @@
 {% load static %}
 <section class="categories container section">
-    <h3 class="section__title"><span>Popular</span> Categories</h3>
+    <h3 class="section__title"><span>Ommabop</span> Toifalar</h3>
     <div class="categories__container swiper">
       <div class="swiper-wrapper">
         {% for c in category %}
 
-        <a href="{% url "details" %}" class="category__item swiper-slide">
+        <a href="" class="category__item swiper-slide">
           <img
             src="{{c.image.url}}"
             alt=""
@@ -16,7 +16,6 @@
         {% endfor %}
         
       </div>
-
       <div class="swiper-button-prev">
         <i class="fi fi-rs-angle-left"></i>
       </div>
