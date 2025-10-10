@@ -1,34 +1,52 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,get_object_or_404
 from .models import Category,Product
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
 
 def dashboard(request):
 
     category=Category.objects.all()
     product=Product.objects.all()
+    paginator=Paginator(product,4)
 
-    categories={"category":category,"product":product}
+    page=request.GET.get('page')
+    page_products=paginator.get_page(page)
+    product_count=len(product)
+    
+    data={
+        'path':"Mahsulotlar",
+        "product":page_products,
+        "product_count":product_count,
+        'category':category,
+        }
+    
 
-    return render(request,"shop/index.html" ,categories)
+    return render(request,"shop/index.html" ,context=data)
 
 @login_required
 def details(request,id):
+   product=get_object_or_404(Product,id=id)
+   name=product.name
 
-    product=Product.objects.get(id=id)
-
-
-    return render(request,"shop/details.html",context={'product':product})
+   return render(request,"shop/details.html",context={'product':product,"path" : f"Mahsulotlar > {name}"})
 
 @login_required
 def shop(request):
     product=Product.objects.all()
-    for i in product:
-        print(i.discount_price)
+    paginator=Paginator(product,4)
 
+    page=request.GET.get('page')
+    page_products=paginator.get_page(page)
+
+    data={
+        'path':"Mahsulotlar",
+        "product":page_products,
+        'product_count':len(product)
+        }
     
-    return render(request,"shop/shop.html" ,context={'path':"Mahsulotlar","product":product})
+    return render(request,"shop/shop.html" ,context=data)
 
 
 @login_required
@@ -44,6 +62,18 @@ def check_out(request):
     return render(request,"shop/checkout.html")
 
 
+def selected_items(request,category_id):
+    products=Product.objects.filter(category_id=category_id)
+    category=get_object_or_404(Category,id=category_id)
+
+    data={
+        "product":products,
+        "path":category.name,
+        'product_count':len(products),
+        }
+    
+    return render(request,'shop/selected_items.html',context=data)
+
 
 def login_regester(request):
     if request.method == "POST":
@@ -51,7 +81,6 @@ def login_regester(request):
         username=request.POST.get("username")
         password=request.POST.get("password")
         user=authenticate(request,username=username,password=password)
-        print(user)
 
         if user is not None:
             login(request,user)

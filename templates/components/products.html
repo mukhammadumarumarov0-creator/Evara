@@ -1,84 +1,145 @@
 {% load static %}
+
 <section class="products container section">
-   
-
-    <div class="tab__items">
-      <div class="tab__item active-tab" content id="featured">
-        <div class="products__container grid">
-
+ <p class="total__products">Siz uchun <span>{{product_count}}</span> ta mahsulot topildi !</p>
+  <div class="tab__items">
+    <div class="tab__item active-tab" content id="featured">
+      <div class="products__container grid">
+        {% if product %}
           {% for p in product %}
-          <div class="product__item">
-            <div class="product__banner">
-              <a href="{% url 'details' p.id %}" class="product__images">
-                <img
-                  src={{p.image.url}}
-                  alt=""
-                  class="product__img default"
-                />
-                <img
-                  src={{p.image.url}}
-                  alt=""
-                  class="product__img hover"
-                />
-              </a>
-              <div class="product__actions">
-                <a href="#" class="action__btn" aria-label="Quick View">
-                  <i class="fi fi-rs-eye"></i>
-                </a>
-                <a
-                  href="#"
-                  class="action__btn"
-                  aria-label="Add to Wishlist"
-                >
-                  <i class="fi fi-rs-heart"></i>
-                </a>
-                <a href="#" class="action__btn" aria-label="Compare">
-                  <i class="fi fi-rs-shuffle"></i>
-                </a>
+            {% if p.id %}
+              <div class="product__item">
+                <div class="product__banner">
+                  <a href="{% url 'details' p.id %}" class="product__images">
+                    <img src="{{ p.image.url }}" alt="{{ p.name }}" class="product__img default" />
+                    <img src="{{ p.image.url }}" alt="{{ p.name }}" class="product__img hover" />
+                  </a>
+                  
+
+                  {% if p.discount %}
+                    <div class="product__badge light-pink">-{{ p.discount }}%</div>
+                  {% endif %}
+                </div>
+
+                <div class="product__content">
+                  <span class="product__category">{{ p.category }}</span>
+                  <a href="{% url 'details' p.id %}">
+                    <h3 class="product__title">{{ p.name }}</h3>
+                  </a>
+                  <div class="product__rating">
+                    <i class="fi fi-rs-star"></i>
+                    <i class="fi fi-rs-star"></i>
+                    <i class="fi fi-rs-star"></i>
+                    <i class="fi fi-rs-star"></i>
+                    <i class="fi fi-rs-star"></i>
+                  </div>
+
+                  <div class="product__price flex">
+                    <span class="new__price">
+                      ${{ p.discount_price|default:p.price }}
+                    </span>
+                    {% if p.discount %}
+                      <span class="old__price">${{ p.price }}</span>
+                    {% endif %}
+                    <a
+                    href="#"
+                    class="action__btn cart__btn"
+                    aria-label="Add To Cart"
+                     >
+                    <i class="fi fi-rs-shopping-bag-add"></i>
+                    </a>
+                  </div>
+                </div>
               </div>
-              {% if p.discount > 0 %}
-                 <div class="product__badge light-pink">-{{p.discount}}%</div>
-              {% endif %}
+            {% endif %}
+          {% empty %}
+            <div class="no-product">
+              <div class="no-product-content">
+                <i class="fi fi-rs-box"></i>
+                <h2>Bu  hozircha mahsulot yo‘q 😔</h2>
+                <p>Tez orada yangi mahsulotlar qo‘shiladi, qayta kirib ko‘ring!</p>
+                <a href="/" class="back-btn">🏠 Bosh sahifaga qaytish</a>
+              </div>
             </div>
-            <div class="product__content">
-              <span class="product__category">{{p.category}}</span>
-              <a href="{% url 'details' p.id %}">
-                <h3 class="product__title">{{p.name}}</h3>
-              </a>
-              <div class="product__rating">
-                <i class="fi fi-rs-star"></i>
-                <i class="fi fi-rs-star"></i>
-                <i class="fi fi-rs-star"></i>
-                <i class="fi fi-rs-star"></i>
-                <i class="fi fi-rs-star"></i>
-              </div>
-              <div class="product__price flex">
-                {% if p.discount == 0 %}
-
-                  <span class="new__price">${{p.price}}</span>
-                {% else %}
-
-                   <span class="new__price">${{p.discount_price}}</span>
-                   <span class="old__price">${{p.price}}</span>
-                
-                {% endif %}
-              </div>
-              <a
-                href="#"
-                class="action__btn cart__btn"
-                aria-label="Add To Cart"
-              >
-                <i class="fi fi-rs-shopping-bag-add"></i>
-              </a>
+          {% endfor %}
+        {% else %}
+          <div class="no-product">
+            <div class="no-product-content">
+              <i class="fi fi-rs-box"></i>
+              <h2>Bu yerda hozircha mahsulot yo‘q 😔</h2>
+              <p>Tez orada yangi mahsulotlar qo‘shiladi, qayta kirib ko‘ring!</p>
+              <a href="/" class="back-btn">🏠 Bosh sahifaga qaytish</a>
             </div>
           </div>
-          {% endfor %}
+        {% endif %}
 
-        </div>
-      </div>
-      <div class="tab__item" content id="new-added">
-        <div class="products__container grid">
-        </div>
       </div>
     </div>
+  </div>
+   <ul class="pagination">
+    {% if product.has_previous %}
+      <li><a href="?page={{product.page_number}}" class="pagination__link "> < </a></li>
+    {% endif %}
+
+    {% for page in product.paginator.page_range  %}
+    <li><a href="?page={{page}}" class="pagination__link  {% if product.number == page %}active{% endif %}" blank>{{page}}</a></li>
+    
+    {% endfor %}
+
+    {% if product.has_next %}
+      <li><a href="?page={{product.next_page_number}}" class="pagination__link "> > </a></li>
+    {% endif %}
+     </ul>
 </section>
+
+  
+
+<style>
+    .no-product {
+    grid-column: 1 / -1;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 4rem 2rem;
+    background: linear-gradient(145deg, #f8f9fa, #eef2f3);
+    border-radius: 20px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+    }
+    .no-product-content {
+    text-align: center;
+    color: #333;
+    max-width: 500px;
+    }
+    .no-product-content i {
+    font-size: 4rem;
+    color: #38bdf8;
+    margin-bottom: 1rem;
+    display: inline-block;
+    }
+    .no-product-content h2 {
+    font-size: 1.6rem;
+    margin-bottom: 0.5rem;
+    color: #111827;
+    font-weight: 600;
+    }
+    .no-product-content p {
+    color: #6b7280;
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+    }
+    .back-btn {
+    display: inline-block;
+    background: #10b981;
+    color: #fff;
+    padding: 0.7rem 1.4rem;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: background 0.3s ease, transform 0.2s ease;
+    }
+    .back-btn:hover {
+    background: #059669;
+    transform: scale(1.05);
+    }
+</style>
