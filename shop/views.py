@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
+from .forms import RegisterForm
 
 def dashboard(request):
 
@@ -61,7 +62,6 @@ def cart(request):
 def check_out(request):
     return render(request,"shop/checkout.html")
 
-
 def selected_items(request,category_id):
     products=Product.objects.filter(category_id=category_id)
     category=get_object_or_404(Category,id=category_id)
@@ -74,7 +74,6 @@ def selected_items(request,category_id):
     
     return render(request,'shop/selected_items.html',context=data)
 
-
 def login_regester(request):
     if request.method == "POST":
         
@@ -86,7 +85,8 @@ def login_regester(request):
             login(request,user)
             return redirect('dashboard')
         
-    return render(request,"shop/login-register.html")
+        
+    return render(request,"shop/login-register.html",{"path":"Login"})
 
 def logout_user(request):
     logout(request)
@@ -97,27 +97,34 @@ def wish_list(request):
 
 def create_account(request):
     if request.method=="POST":
-        first_name=request.POST.get('first_name')
-        last_name=request.POST.get('last_name')
-        username=request.POST.get('username')
-        email=request.POST.get('email')
-        password1=request.POST.get("password1")
-        password2=request.POST.get("password2")
-        print(first_name,last_name,email,password1,password2,username)
+        form=RegisterForm(request.POST)
+        if form.is_valid():
+            first_name=request.POST.get('first_name')
+            last_name=request.POST.get('last_name')
+            username=request.POST.get('username')
+            email=request.POST.get('email')
+            password=request.POST.get("password")
 
-        if first_name and last_name and username and email and password1 and password2:
             user=User(
                 first_name=first_name,
                 last_name=last_name,
                 username=username,
                 email=email,
             )
-            if password1==password2:
-                user.set_password(password1)
-                print(user)
-                user.save()
-                return redirect('register')
-            else:
-                print('password not match')
-
-    return render(request,"shop/register.html")
+            user.set_password(password)
+            user.save()
+            return redirect('register')
+        
+        else:
+            message={
+                "path":'Register',
+                "form":form
+            }
+            return render(request,"shop/register.html",context=message)
+    
+    form=RegisterForm()
+    message={
+                "path":'Register',
+                "form":form
+            }
+    return render(request,"shop/register.html",context=message)

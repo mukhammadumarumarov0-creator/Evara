@@ -4,53 +4,11 @@
         <h3 class="section__title">Create an Account</h3>
             <form class="form grid" method='POST'>
                 {% csrf_token %}
-            <input
-                type="text"
-                placeholder="First Name"
-                class="form__input"
-                name="first_name"
-                required
-                />
-            <input
-                type="text"
-                placeholder="Last Name"
-                class="form__input"
-                name="last_name"
-                required
-
-                />
-            <input
-                type="text"
-                placeholder="Username"
-                class="form__input"
-                name="username"
-                required
-
-                />
-            <input
-                type="email"
-                placeholder="Your Email"
-                class="form__input"
-                name="email"
-                required
-
-            />
-            <input
-                type="password"
-                placeholder="Your Password"
-                class="form__input"
-                name='password1'
-                required
-
-            />
-            <input
-                type="password"
-                placeholder="Confirm Password"
-                class="form__input"
-                name='password2'
-                required
-
-            />
+                {% for field in form %}
+                {{field.errors}}
+                {{field}}
+                {% endfor %}
+      
             <div class="form__btn">
                 <button class="btn">Submit & Register</button>
       </div>
