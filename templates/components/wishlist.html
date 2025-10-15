@@ -12,74 +12,33 @@
           </tr>
         </thead>
         <tbody>
+          {% for w in wish_products %}
           <tr>
             <td>
               <img
-                src="./assets//img/product-1-2.jpg"
+                src="{{w.image.url}}"
                 alt=""
                 class="table__img"
               />
             </td>
             <td>
               <h3 class="table__title">
-                J.Crew Mercantile Women's Short-Sleeve
+               {{w.name}}
               </h3>
               <p class="table__description">
-                Lorem ipsum dolor sit amet consectetur.
+                {{w.description}}
               </p>
             </td>
             <td>
-              <span class="table__price">$110</span>
+              <span class="table__price">{{w.price}}</span>
             </td>
             <td><span class="table__stock">In Stock</span></td>
-            <td><a href="#" class="btn btn--sm">Add to Cart</a></td>
+            <td><a href="" class="btn btn--sm">Add to Cart</a></td>
             <td><i class="fi fi-rs-trash table__trash"></i></td>
           </tr>
-          <tr>
-            <td>
-              <img
-                src="./assets//img/product-7-1.jpg"
-                alt=""
-                class="table__img"
-              />
-            </td>
-            <td>
-              <h3 class="table__title">Amazon Essentials Women's Tank</h3>
-              <p class="table__description">
-                Lorem ipsum dolor sit amet consectetur.
-              </p>
-            </td>
-            <td>
-              <span class="table__price">$110</span>
-            </td>
-            <td><span class="table__stock">In Stock</span></td>
-            <td><a href="#" class="btn btn--sm">Add to Cart</a></td>
-            <td><i class="fi fi-rs-trash table__trash"></i></td>
-          </tr>
-          <tr>
-            <td>
-              <img
-                src="./assets//img/product-2-1.jpg"
-                alt=""
-                class="table__img"
-              />
-            </td>
-            <td>
-              <h3 class="table__title">
-                Amazon Brand - Daily Ritual Women's Jersey
-              </h3>
-              <p class="table__description">
-                Lorem ipsum dolor sit amet consectetur.
-              </p>
-            </td>
-            <td>
-              <span class="table__price">$110</span>
-            </td>
-            <td><span class="table__stock">In Stock</span></td>
-            <td><a href="#" class="btn btn--sm">Add to Cart</a></td>
-            <td><i class="fi fi-rs-trash table__trash"></i></td>
-          </tr>
+          {% endfor %}
         </tbody>
       </table>
     </div>
   </section>
+

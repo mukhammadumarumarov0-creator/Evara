@@ -12,73 +12,31 @@
           </tr>
         </thead>
         <tbody>
+          {% for p in products %}
           <tr>
             <td>
               <img
-                src="./assets//img/product-1-2.jpg"
+                src="{{p.image.url}}"
                 alt=""
                 class="table__img"
               />
             </td>
             <td>
               <h3 class="table__title">
-                J.Crew Mercantile Women's Short-Sleeve
+                {{p.name}}
               </h3>
               <p class="table__description">
-                Lorem ipsum dolor sit amet consectetur.
+                {{p.description}}
               </p>
             </td>
             <td>
-              <span class="table__price">$110</span>
+              <span class="table__price">${{p.price}}</span>
             </td>
             <td><input type="number" value="3" class="quantity" /></td>
             <td><span class="subtotal">$220</span></td>
             <td><i class="fi fi-rs-trash table__trash"></i></td>
           </tr>
-          <tr>
-            <td>
-              <img
-                src="./assets//img/product-7-1.jpg"
-                alt=""
-                class="table__img"
-              />
-            </td>
-            <td>
-              <h3 class="table__title">Amazon Essentials Women's Tank</h3>
-              <p class="table__description">
-                Lorem ipsum dolor sit amet consectetur.
-              </p>
-            </td>
-            <td>
-              <span class="table__price">$110</span>
-            </td>
-            <td><input type="number" value="3" class="quantity" /></td>
-            <td><span class="subtotal">$220</span></td>
-            <td><i class="fi fi-rs-trash table__trash"></i></td>
-          </tr>
-          <tr>
-            <td>
-              <img
-                src="./assets//img/product-2-1.jpg"
-                alt=""
-                class="table__img"
-              />
-            </td>
-            <td>
-              <h3 class="table__title">
-                Amazon Brand - Daily Ritual Women's Jersey
-              </h3>
-              <p class="table__description">
-                Lorem ipsum dolor sit amet consectetur.
-              </p>
-            </td>
-            <td>
-              <span class="table__price">$110</span>
-            </td>
-            <td><input type="number" value="3" class="quantity" /></td>
-            <td><span class="subtotal">$220</span></td>
-            <td><i class="fi fi-rs-trash table__trash"></i></td>
-          </tr>
+          {% endfor %}
         </tbody>
       </table>
     </div>

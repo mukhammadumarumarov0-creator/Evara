@@ -14,7 +14,24 @@
                     <img src="{{ p.image.url }}" alt="{{ p.name }}" class="product__img default" />
                     <img src="{{ p.image.url }}" alt="{{ p.name }}" class="product__img hover" />
                   </a>
-                  
+                  <div class="product__actions">
+                    <a href="" class="action__btn" aria-label="Quick View">
+                      <i class="fi fi-rs-eye"></i>
+
+                    </a>
+
+                    <a href="#" 
+                      class="action__btn wishlist__btn" 
+                      aria-label="Add to Wishlist" 
+                      data-product-id="{{ p.id }}">
+                      <i class="fi fi-rs-heart"></i>
+                    </a>
+
+
+                    <a href="#" class="action__btn" aria-label="Compare">
+                      <i class="fi fi-rs-shuffle"></i>
+                    </a>
+                  </div>
 
                   {% if p.discount %}
                     <div class="product__badge light-pink">-{{ p.discount }}%</div>
@@ -41,12 +58,13 @@
                     {% if p.discount %}
                       <span class="old__price">${{ p.price }}</span>
                     {% endif %}
-                    <a
-                    href="#"
-                    class="action__btn cart__btn"
-                    aria-label="Add To Cart"
-                     >
+                    <a href="#" 
+                    class="action__btn cart__btn" 
+                    aria-label="Add To Cart" 
+                    data-product-id="{{ p.id }}">
                     <i class="fi fi-rs-shopping-bag-add"></i>
+                 </a>
+                 
                     </a>
                   </div>
                 </div>
@@ -144,3 +162,144 @@
     transform: scale(1.05);
     }
 </style>
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const cartButtons = document.querySelectorAll('.cart__btn');
+  
+    cartButtons.forEach(btn => {
+      btn.addEventListener('click', async (e) => {
+        e.preventDefault();
+  
+        const productId = btn.dataset.productId;
+        const url = `/cart/add/${productId}/`;
+  
+        try {
+          const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+              'X-Requested-With': 'XMLHttpRequest',
+              'X-CSRFToken': getCookie('csrftoken'),
+              'Content-Type': 'application/json'
+            },
+            credentials: 'same-origin' // 🔥 session cookie yuboradi
+          });
+  
+          if (!response.ok) throw new Error('Server error');
+  
+          const data = await response.json();
+          console.log('✅ Added to cart:', data);
+  
+          // 🟢 Cart count ni backenddan yangilaymiz
+          const countEl = document.getElementById('cart_count');
+          if (countEl) {
+            countEl.textContent = data.cart_count;
+          }
+  
+        } catch (error) {
+          console.error('❌ Error adding to cart:', error);
+        }
+      });
+    });
+  });
+  
+  function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+      const cookies = document.cookie.split(';');
+      for (let cookie of cookies) {
+        cookie = cookie.trim();
+        if (cookie.startsWith(name + '=')) {
+          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+          break;
+        }
+      }
+    }
+    return cookieValue;
+  }
+  
+</script>
+
+
+<script>
+      document.addEventListener('DOMContentLoaded', () => {
+        const wishlistButtons = document.querySelectorAll('.wishlist__btn');
+      
+        wishlistButtons.forEach(btn => {
+          btn.addEventListener('click', async (e) => {
+            e.preventDefault();
+      
+            const productId = btn.dataset.productId;
+            if (!productId) {
+              console.error('❌ data-product-id topilmadi');
+              return;
+            }
+      
+            try {
+              const response = await fetch(`/wishlist/add/${productId}/`, {
+                method: 'POST',
+                headers: {
+                  'X-Requested-With': 'XMLHttpRequest',
+                  'X-CSRFToken': getCookie('csrftoken'),
+                  'Content-Type': 'application/json'
+                },
+                credentials: 'same-origin'
+              });
+      
+              if (response.status === 403) {
+                console.warn('⚠️ Foydalanuvchi login qilmagan — localStorage ishlatilyapti');
+                addToLocalWishlist(productId);
+                updateWishlistCountLocal();
+                return;
+              }
+      
+              if (!response.ok) throw new Error('Server error');
+      
+              const data = await response.json();
+              console.log('❤️ Added to wishlist:', data);
+      
+              const countEl = document.getElementById('wishlist_count');
+              if (countEl && data.wishlist_count !== undefined) {
+                countEl.textContent = data.wishlist_count;
+              }
+      
+              btn.classList.add('added');
+              setTimeout(() => btn.classList.remove('added'), 800);
+      
+            } catch (error) {
+              console.error('❌ Wishlist xatolik:', error);
+            }
+          });
+        });
+      });
+      
+      // 🍪 Django uchun csrf cookie funksiyasi
+      function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+          const cookies = document.cookie.split(';');
+          for (let cookie of cookies) {
+            cookie = cookie.trim();
+            if (cookie.startsWith(name + '=')) {
+              cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+              break;
+            }
+          }
+        }
+        return cookieValue;
+      }
+      
+      // 🧡 Agar user login qilmagan bo‘lsa localStorage ishlatamiz
+      function addToLocalWishlist(productId) {
+        let wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+        if (!wishlist.includes(productId)) wishlist.push(productId);
+        localStorage.setItem('wishlist', JSON.stringify(wishlist));
+      }
+      
+      // 🔢 localStorage dagi wishlist count ni yangilaydi
+      function updateWishlistCountLocal() {
+        const wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+        const countEl = document.getElementById('wishlist_count');
+        if (countEl) countEl.textContent = wishlist.length;}
+</script>

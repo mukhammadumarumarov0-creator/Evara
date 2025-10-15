@@ -77,7 +77,6 @@
           {% endif %}
             <li class="nav__item">
           </ul>
-          {% if request.user.is_authenticated %}
               <div class="header__search">
                 <input
                   type="text"
@@ -89,17 +88,21 @@
                 </button>
               </div>
             </div>
+            
             <div class="header__user-actions">
               <a href="{% url 'wishlist' %}" class="header__action-btn" title="Wishlist">
-                <img src={% static "img/icon-heart.svg" %} alt="image" />
-                <span class="count">3</span>
+                <img src="{% static 'img/icon-heart.svg' %}" alt="Wishlist" />
+                <span class="count" id="wishlist_count">{{wishlist_count}}</span>
               </a>
+              
               <a href="{% url 'cart' %}" class="header__action-btn" title="Cart">
-                <img src={% static 'img/icon-cart.svg' %} alt="image" />
-                <span class="count">3</span>
+                <img src="{% static 'img/icon-cart.svg' %}" alt="image" />
+                <span class="count" id="cart_count">{{cart_count}}</span>
+              </a>
+              
               </a>
             </div>
-        {% endif %}
+      
       </nav>
     </header>
 
