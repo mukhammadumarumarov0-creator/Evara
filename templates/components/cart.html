@@ -16,25 +16,32 @@
           <tr>
             <td>
               <img
-                src="{{p.image.url}}"
+                src="{{p.product.image.url}}"
                 alt=""
                 class="table__img"
               />
             </td>
             <td>
               <h3 class="table__title">
-                {{p.name}}
+                {{p.product.name}}
               </h3>
               <p class="table__description">
-                {{p.description}}
+                {{p.product.description | truncatewords:7}}
               </p>
             </td>
             <td>
-              <span class="table__price">${{p.price}}</span>
+              
+              {% if p.product.discount > 0 %}
+                <span class="table__price">${{p.product.discount_price}}</span>
+                <span class="old__price">${{ p.product.price }}</span>
+              {% else %}
+                <span class="table__price">${{p.product.price}}</span>
+              {% endif %}
+
             </td>
-            <td><input type="number" value="3" class="quantity" /></td>
-            <td><span class="subtotal">$220</span></td>
-            <td><i class="fi fi-rs-trash table__trash"></i></td>
+            <td><input type="number" value="{{p.quantity}}" class="quantity"  readonly/></td>
+            <td><span class="subtotal">${{p.total}}</span></td>
+            <td><a href="{% url "remove" p.product.id %}"><i class="fi fi-rs-trash table__trash"></i></a></td>
           </tr>
           {% endfor %}
         </tbody>
@@ -45,8 +52,8 @@
       <a href="#" class="btn flex btn__md">
         <i class="fi-rs-shuffle"></i> Update Cart
       </a>
-      <a href="#" class="btn flex btn__md">
-        <i class="fi-rs-shopping-bag"></i> Continue Shopping
+      <a href="{% url 'shop' %}" class="btn flex btn__md">
+        <i class="fi-rs-shopping-bag"></i> Xaridni davom etish
       </a>
     </div>
 

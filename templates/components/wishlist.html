@@ -30,11 +30,11 @@
               </p>
             </td>
             <td>
-              <span class="table__price">{{w.price}}</span>
+              <span class="table__price">${{w.price}}</span>
             </td>
             <td><span class="table__stock">In Stock</span></td>
-            <td><a href="" class="btn btn--sm">Add to Cart</a></td>
-            <td><i class="fi fi-rs-trash table__trash"></i></td>
+            <td><a href="{% url 'add_product' w.id %}" class="btn btn--sm">Add to Cart</a></td>
+            <td><a href="{% url 'wishlist_remove' w.id %}"><i class="fi fi-rs-trash table__trash"></i></a></td>
           </tr>
           {% endfor %}
         </tbody>

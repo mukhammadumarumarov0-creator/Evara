@@ -1,18 +1,22 @@
-from django.shortcuts import render,get_object_or_404
+from django.shortcuts import render,get_object_or_404,redirect
 from shop.models import Category,Product
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from shop.views import WishList,Cart
+from django.db.models import Q
 
 
-
-
-   
 
 def dashboard(request):
 
     category=Category.objects.all()
     product=Product.objects.all()
+
+    q=request.GET.get("q")
+    if q:
+        product=Product.objects.filter(Q(name__icontains=q) | Q(description__icontains=q))
+    
+
     paginator=Paginator(product,4)
     cart=Cart(request)
     wishlist=WishList(request)
@@ -20,6 +24,7 @@ def dashboard(request):
     page=request.GET.get('page')
     page_products=paginator.get_page(page)
     product_count=len(product)
+    
     
     data={
         'path':"Mahsulotlar",
@@ -42,9 +47,13 @@ def details(request,id):
    return render(request,"shop/details.html",context={'product':product,"path" : f"Mahsulotlar > {name}"})
 
 
-@login_required
+
 def shop(request):
     product=Product.objects.all()
+    q=request.GET.get('q')
+    if q:
+        product=Product.objects.filter(Q(name__icontains=q) | Q(description__icontains=q))
+
     paginator=Paginator(product,4)
     cart=Cart(request)
     wishlist=WishList(request)

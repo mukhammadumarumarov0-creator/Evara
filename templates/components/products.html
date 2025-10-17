@@ -112,112 +112,96 @@
 </section>
 
   
-
 <style>
-    .no-product {
-    grid-column: 1 / -1;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 4rem 2rem;
-    background: linear-gradient(145deg, #f8f9fa, #eef2f3);
-    border-radius: 20px;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.05);
-    }
-    .no-product-content {
-    text-align: center;
-    color: #333;
-    max-width: 500px;
-    }
-    .no-product-content i {
-    font-size: 4rem;
-    color: #38bdf8;
-    margin-bottom: 1rem;
-    display: inline-block;
-    }
-    .no-product-content h2 {
-    font-size: 1.6rem;
-    margin-bottom: 0.5rem;
-    color: #111827;
-    font-weight: 600;
-    }
-    .no-product-content p {
-    color: #6b7280;
-    font-size: 1rem;
-    margin-bottom: 1.5rem;
-    }
-    .back-btn {
-    display: inline-block;
-    background: #10b981;
-    color: #fff;
-    padding: 0.7rem 1.4rem;
-    border-radius: 10px;
-    text-decoration: none;
-    font-weight: 500;
-    transition: background 0.3s ease, transform 0.2s ease;
-    }
-    .back-btn:hover {
-    background: #059669;
-    transform: scale(1.05);
-    }
+  .no-product {
+  grid-column: 1 / -1;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 4rem 2rem;
+  background: linear-gradient(145deg, #f8f9fa, #eef2f3);
+  border-radius: 20px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+  }
+  .no-product-content {
+  text-align: center;
+  color: #333;
+  max-width: 500px;
+  }
+  .no-product-content i {
+  font-size: 4rem;
+  color: #38bdf8;
+  margin-bottom: 1rem;
+  display: inline-block;
+  }
+  .no-product-content h2 {
+  font-size: 1.6rem;
+  margin-bottom: 0.5rem;
+  color: #111827;
+  font-weight: 600;
+  }
+  .no-product-content p {
+  color: #6b7280;
+  font-size: 1rem;
+  margin-bottom: 1.5rem;
+  }
+  .back-btn {
+  display: inline-block;
+  background: #10b981;
+  color: #fff;
+  padding: 0.7rem 1.4rem;
+  border-radius: 10px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: background 0.3s ease, transform 0.2s ease;
+  }
+  .back-btn:hover {
+  background: #059669;
+  transform: scale(1.05);
+  }
 </style>
 
 
+
 <script>
+  
   document.addEventListener('DOMContentLoaded', () => {
     const cartButtons = document.querySelectorAll('.cart__btn');
   
     cartButtons.forEach(btn => {
       btn.addEventListener('click', async (e) => {
         e.preventDefault();
-  
         const productId = btn.dataset.productId;
-        const url = `/cart/add/${productId}/`;
   
         try {
-          const response = await fetch(url, {
+          const response = await fetch(`/cart/add/${productId}/`, {
             method: 'POST',
             headers: {
               'X-Requested-With': 'XMLHttpRequest',
               'X-CSRFToken': getCookie('csrftoken'),
-              'Content-Type': 'application/json'
+              'Content-Type': 'application/json',
             },
-            credentials: 'same-origin' // 🔥 session cookie yuboradi
+            credentials: 'same-origin',
           });
   
           if (!response.ok) throw new Error('Server error');
-  
           const data = await response.json();
-          console.log('✅ Added to cart:', data);
   
-          // 🟢 Cart count ni backenddan yangilaymiz
+          // 🛒 Cart count yangilash
           const countEl = document.getElementById('cart_count');
-          if (countEl) {
-            countEl.textContent = data.cart_count;
-          }
+          if (countEl) countEl.textContent = data.cart_count;
+  
+          // Animatsiya
+          btn.classList.add('added');
+          setTimeout(() => btn.classList.remove('added'), 800);
   
         } catch (error) {
-          console.error('❌ Error adding to cart:', error);
+          console.error('❌ Cart xatolik:', error);
         }
       });
     });
   });
-  
-  function getCookie(name) {
-    let cookieValue = null;
-    if (document.cookie && document.cookie !== '') {
-      const cookies = document.cookie.split(';');
-      for (let cookie of cookies) {
-        cookie = cookie.trim();
-        if (cookie.startsWith(name + '=')) {
-          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-          break;
-        }
-      }
-    }
-    return cookieValue;
-  }
   
 </script>
 

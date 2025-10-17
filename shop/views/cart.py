@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from shop.models import Product
 from django.http import JsonResponse
 
@@ -28,11 +28,31 @@ class Cart:
     def get_products(self):
         products=[]
 
-        for pid in self.cart.keys():
-            products.append(Product.objects.get(id=pid))
-            print(pid)
+        for pid , quantity in self.cart.items():
+            product=Product.objects.get(id=pid)
+            if product.discount>0:
+                total=product.discount_price*quantity
+            else:
+                total=product.price*quantity
+
+            data={
+                "quantity":quantity,
+                "product":product,
+                "total":total
+            }
+            products.append(data)
+
 
         return products
+    
+    def remove(self,product_id):
+        if str(product_id) in self.cart.keys():
+            del self.cart[str(product_id)]
+
+            self.session.modified=True
+            return True
+        return False
+
 
 class WishList:
     def __init__(self, request):
@@ -60,12 +80,20 @@ class WishList:
 
         return products
     
+    def remove(self,product_id):
+        if str(product_id) in self.wishlist.keys():
+            del self.wishlist[str(product_id)]
+
+            self.session.modified=True
+            return True
+        return False
+    
 
    
 def cart_page(request,product_id):
    cart=Cart(request)
    
-   
+
    if Product.objects.filter(id=product_id).exists():
        cart.add(product_id)
 
@@ -74,10 +102,10 @@ def cart_page(request,product_id):
 
 def add_to_wishlist(request,product_id):
     wishlist=WishList(request)
-
+ 
     if Product.objects.filter(id=product_id).exists():
         wishlist.add(product_id)
-
+        
     return JsonResponse({"message":"savatga qoshildi","wishlist_count":wishlist.get_count()})
 
     
@@ -99,7 +127,7 @@ def cart(request):
 def wish_list(request):
     wishlist=WishList(request)
     cart=Cart(request)
-
+   
     data={
         "wish_products":wishlist.get_products(),
         'path':"Sevimlilar",
@@ -110,7 +138,14 @@ def wish_list(request):
     return render(request,"shop/wishlist.html",context=data)
 
 
-
+def remove_item_form_cart(request,product_id):
+    cart=Cart(request)
+    cart.remove(product_id)
+    return redirect("cart")
 
         
- 
+def remove_item_from_wishlist(request,product_id):
+    wishlist=WishList(request)
+    wishlist.remove(product_id)
+    return redirect("wishlist")
+

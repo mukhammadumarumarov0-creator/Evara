@@ -78,14 +78,17 @@
             <li class="nav__item">
           </ul>
               <div class="header__search">
-                <input
+                <form method="GET">
+                  <input
                   type="text"
                   placeholder="Qidiruv..."
                   class="form__input"
+                  name="q"
                 />
-                <button class="search__btn">
+                <button class="search__btn" type="submit">
                   <img src={% static "img/search.png" %} alt="search icon" />
                 </button>
+                </form>
               </div>
             </div>
             
