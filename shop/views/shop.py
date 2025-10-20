@@ -79,9 +79,7 @@ def accounts(request):
     return render(request,"shop/accounts.html",context={'path':"Profilim",'cart_count':cart.get_count(),'wishlist_count':wishlist.get_count(),})
 
 
-@login_required
-def check_out(request):
-    return render(request,"shop/checkout.html")
+
 
 
 def selected_items(request,category_id):

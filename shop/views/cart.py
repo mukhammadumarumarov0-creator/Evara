@@ -27,6 +27,7 @@ class Cart:
     
     def get_products(self):
         products=[]
+        total_with_discount=0
 
         for pid , quantity in self.cart.items():
             product=Product.objects.get(id=pid)
@@ -34,6 +35,7 @@ class Cart:
                 total=product.discount_price*quantity
             else:
                 total=product.price*quantity
+            total_with_discount += total
 
             data={
                 "quantity":quantity,
@@ -42,8 +44,19 @@ class Cart:
             }
             products.append(data)
 
+        total_price=0
+        for p in products:
+            total_price += p['product'].price*p["quantity"]
 
-        return products
+        data={
+
+            "products":products,
+            "total_price":total_price,
+            "total_with_discount":total_with_discount,
+            "profit":total_price-total_with_discount,
+        }
+
+        return data
     
     def remove(self,product_id):
         if str(product_id) in self.cart.keys():
@@ -52,7 +65,10 @@ class Cart:
             self.session.modified=True
             return True
         return False
-
+    
+    def clear(self):
+        self.cart.clear()
+        self.session.modified=True
 
 class WishList:
     def __init__(self, request):
@@ -105,6 +121,7 @@ def add_to_wishlist(request,product_id):
  
     if Product.objects.filter(id=product_id).exists():
         wishlist.add(product_id)
+
         
     return JsonResponse({"message":"savatga qoshildi","wishlist_count":wishlist.get_count()})
 
@@ -134,7 +151,7 @@ def wish_list(request):
         "cart_count":cart.get_count(),
         "wishlist_count":wishlist.get_count()
     }
-
+    
     return render(request,"shop/wishlist.html",context=data)
 
 
