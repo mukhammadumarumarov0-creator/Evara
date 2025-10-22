@@ -1,28 +1,28 @@
 from django.urls import path,include
-from shop.views.user import login_regester,logout_user,create_account
-from shop.views.shop import dashboard,details,shop,selected_items,accounts
-from shop.views.cart import cart,cart_page,wish_list,add_to_wishlist,remove_item_form_cart,remove_item_from_wishlist
+from shop.views.user import LoginUserView,LogOutView,CreatAccountView
+from shop.views.shop import DashboardView,DetailsView,ShopView,SelectedItemsView,AccountView
+from shop.views.cart import CartPageView,WishlistView,RemoveCartView,RemoveWishView
 from shop.views.order import GetCheckOutView
 
 urlpatterns = [
-    path("",dashboard,name="dashboard"),
-    path("details/<int:id>/",details,name="details"),
-    path("shop/",shop,name="shop"),
-    path("accounts/",accounts,name="account"),
-    path("cart/",cart,name="cart"),
+    path("",DashboardView.as_view(),name="dashboard"),
+    path("details/<int:id>/",DetailsView.as_view(),name="details"),
+    path("shop/",ShopView.as_view(),name="shop"),
+    path("accounts/",AccountView.as_view(),name="account"),
+    path("cart/",CartPageView.as_view(),name="cart"),
     path("checkout/",GetCheckOutView.as_view(),name="checkout"),
 
-    path("register/",login_regester,name="register"),
-    path("create_account/",create_account,name="create_account"),
-    path("logout/",logout_user,name="logout_user"),
+    path("register/",LoginUserView.as_view(),name="register"),
+    path("create_account/",CreatAccountView.as_view(),name="create_account"),
+    path("logout/",LogOutView.as_view(),name="logout_user"),
     
-    path("selected_ones/<int:category_id>/",selected_items,name="selected_ones"),
-    path("wishlist/",wish_list,name="wishlist"),
+    path("selected_ones/<int:category_id>/",SelectedItemsView.as_view(),name="selected_ones"),
+    path("wishlist/",WishlistView.as_view(),name="wishlist"),
 
-    path("wishlist/add/<int:product_id>/",add_to_wishlist),
-    path("cart/add/<int:product_id>/",cart_page,name="add_product"),
-    path("remove/<int:product_id>/",remove_item_form_cart,name="remove"),
-    path("wishlist/remove/<int:product_id>/",remove_item_from_wishlist,name="wishlist_remove"),
+    path("wishlist/add/<int:product_id>/",WishlistView.as_view()),
+    path("cart/add/<int:product_id>/",CartPageView.as_view(),name="add_product"),
+    path("remove/<int:product_id>/",RemoveCartView.as_view(),name="remove"),
+    path("wishlist/remove/<int:product_id>/",RemoveWishView.as_view(),name="wishlist_remove"),
 
 
 

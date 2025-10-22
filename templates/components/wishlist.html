@@ -42,3 +42,84 @@
     </div>
   </section>
 
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const wishlistButtons = document.querySelectorAll('.wishlist__btn');
+    
+      wishlistButtons.forEach(btn => {
+        btn.addEventListener('click', async (e) => {
+          e.preventDefault();
+    
+          const productId = btn.dataset.productId;
+          if (!productId) {
+            console.error('❌ data-product-id topilmadi');
+            return;
+          }
+    
+          try {
+            const response = await fetch(`/wishlist/add/${productId}/`, {
+              method: 'POST',
+              headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRFToken': getCookie('csrftoken'),
+                'Content-Type': 'application/json'
+              },
+              credentials: 'same-origin'
+            });
+    
+            if (response.status === 403) {
+              console.warn('⚠️ Foydalanuvchi login qilmagan — localStorage ishlatilyapti');
+              addToLocalWishlist(productId);
+              updateWishlistCountLocal();
+              return;
+            }
+    
+            if (!response.ok) throw new Error('Server error');
+    
+            const data = await response.json();
+            console.log('❤️ Added to wishlist:', data);
+    
+            const countEl = document.getElementById('wishlist_count');
+            if (countEl && data.wishlist_count !== undefined) {
+              countEl.textContent = data.wishlist_count;
+            }
+    
+            btn.classList.add('added');
+            setTimeout(() => btn.classList.remove('added'), 800);
+    
+          } catch (error) {
+            console.error('❌ Wishlist xatolik:', error);
+          }
+        });
+      });
+    });
+    
+    // 🍪 Django uchun csrf cookie funksiyasi
+    function getCookie(name) {
+      let cookieValue = null;
+      if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let cookie of cookies) {
+          cookie = cookie.trim();
+          if (cookie.startsWith(name + '=')) {
+            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+            break;
+          }
+        }
+      }
+      return cookieValue;
+    }
+    
+    // 🧡 Agar user login qilmagan bo‘lsa localStorage ishlatamiz
+    function addToLocalWishlist(productId) {
+      let wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+      if (!wishlist.includes(productId)) wishlist.push(productId);
+      localStorage.setItem('wishlist', JSON.stringify(wishlist));
+    }
+    
+    // 🔢 localStorage dagi wishlist count ni yangilaydi
+    function updateWishlistCountLocal() {
+      const wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+      const countEl = document.getElementById('wishlist_count');
+      if (countEl) countEl.textContent = wishlist.length;}
+</script>

@@ -14,7 +14,7 @@ class GetCheckOutView(LoginRequiredMixin,View):
         products=cart.get_products()
 
         data={
-           "path":"chechout",
+           "path":"Savatcha",
            "cart_count":cart.get_count(),
            "wishlist_count":wishlist.get_count(),
            "products":products
