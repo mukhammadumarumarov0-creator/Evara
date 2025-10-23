@@ -10,9 +10,6 @@
         <p class="account__tab" data-target="#update-profile">
           <i class="fi fi-rs-user"></i> Update Profile
         </p>
-        <p class="account__tab" data-target="#address">
-          <i class="fi fi-rs-marker"></i> My Address
-        </p>
         <p class="account__tab" data-target="#change-password">
           <i class="fi fi-rs-settings-sliders"></i> Change Password
         </p>
@@ -28,40 +25,29 @@
           </div>
         </div>
         <div class="tab__content" content id="orders">
-          <h3 class="tab__header">Your Orders</h3>
+          <h3 class="tab__header">Sizning Buyurtmangizni</h3>
           <div class="tab__body">
             <table class="placed__order-table">
               <thead>
                 <tr>
-                  <th>Orders</th>
-                  <th>Date</th>
-                  <th>Status</th>
-                  <th>Totals</th>
+                  <th>Order id</th>
+                  <th>Sana</th>
+                  <th>Holati</th>
+                  <th>Narxi</th>
                   <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
+              {% for o in orders %}
                 <tr>
-                  <td>#1357</td>
-                  <td>March 19, 2022</td>
-                  <td>Processing</td>
-                  <td>$125.00</td>
+                  <td>#{{o.order.id}}</td>
+                  <td>{{o.order.created_at}}</td>
+                  <td>{{o.order.status}}</td>
+                  <td>${{o.total_price}}</td>
                   <td><a href="#" class="view__order">View</a></td>
                 </tr>
-                <tr>
-                  <td>#2468</td>
-                  <td>June 29, 2022</td>
-                  <td>Completed</td>
-                  <td>$364.00</td>
-                  <td><a href="#" class="view__order">View</a></td>
-                </tr>
-                <tr>
-                  <td>#2366</td>
-                  <td>August 02, 2022</td>
-                  <td>Completed</td>
-                  <td>$280.00</td>
-                  <td><a href="#" class="view__order">View</a></td>
-                </tr>
+              {% endfor %}
+
               </tbody>
             </table>
           </div>
@@ -79,19 +65,6 @@
                 <button class="btn btn--md">Save</button>
               </div>
             </form>
-          </div>
-        </div>
-        <div class="tab__content" content id="address">
-          <h3 class="tab__header">Shipping Address</h3>
-          <div class="tab__body">
-            <address class="address">
-              3522 Interstate <br />
-              75 Business Spur, <br />
-              Sault Ste. <br />
-              Marie, Mi 49783
-            </address>
-            <p class="city">New York</p>
-            <a href="#" class="edit">Edit</a>
           </div>
         </div>
         <div class="tab__content" content id="change-password">

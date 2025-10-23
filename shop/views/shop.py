@@ -41,12 +41,23 @@ class DashboardView(View):
 
         return render(request,"shop/index.html" ,context=data)
 
+
 class DetailsView(LoginRequiredMixin,View):
  def get(self,request,id):
     product=get_object_or_404(Product,id=id)
     name=product.name
+    cart=Cart(request)
+    wishlist=WishList(request)
 
-    return render(request,"shop/details.html",context={'product':product,"path" : f"Mahsulotlar > {name}"})
+    data={
+       'product':product,
+       "path" : f"Mahsulotlar > {name}",
+       "cart_count":cart.get_count(),
+       "wishlist_count":wishlist.get_count()
+
+       }
+
+    return render(request,"shop/details.html",context=data)
 
 
 class ShopView(View):
@@ -78,23 +89,28 @@ class AccountView(View):
  def get(self,request):
     cart=Cart(request)
     wishlist=WishList(request)
-    user=request.user.id
-    print("bu id",user)
-    self.get_my_orders(user)
+    user_id=request.user.id
+    orders=[]
+    for i in Order.objects.filter(user_id=user_id):
+       print(i.get_total())
+       data= {
+          "order":i,
+          "total_price":i.get_total(),
+         
+       }
+       orders.append(data)
+      
     
     data={
        
+       "orders":orders,
        'path':"Profilim",
        'cart_count':cart.get_count(),
        'wishlist_count':wishlist.get_count(),
     }
     return render(request,"shop/accounts.html",data)
 
- def get_my_orders(self,user_id):
-     
-    orders=Order.objects.filter(user_id=user_id)
-    for order in orders:
-       pass
+
       
      
     

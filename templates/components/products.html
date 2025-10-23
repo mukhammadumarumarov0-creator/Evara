@@ -15,7 +15,7 @@
                     <img src="{{ p.image.url }}" alt="{{ p.name }}" class="product__img hover" />
                   </a>
                   <div class="product__actions">
-                    <a href="" class="action__btn" aria-label="Quick View">
+                    <a href="{% url 'details' p.id %}" class="action__btn" aria-label="Quick View">
                       <i class="fi fi-rs-eye"></i>
 
                     </a>

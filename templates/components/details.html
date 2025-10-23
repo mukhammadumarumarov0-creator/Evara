@@ -112,9 +112,9 @@
           </ul>
         </div> -->
         <div class="details__action">
-          <input type="number" class="quantity" value="3" />
-          <a href="#" class="btn btn--sm">Add To Card</a>
-          <a href="#" class="details__action-btn">
+          <!-- <input type="number" class="quantity" value="3" /> -->
+          <a href="{% url 'add_product_from_details' product.id %}" class="btn btn--sm">Add To Card</a>
+          <a href="{% url 'add_product_from_details_to_wishlist' product.id %}" class="details__action-btn link-active">
             <i class="fi fi-rs-heart"></i>
           </a>
         </div>

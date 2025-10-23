@@ -110,12 +110,17 @@ class WishList:
 
    
 class CartPageView(View):
- 
- def get(self,request):
-
+ def get(self,request,product_id=None):
     cart=Cart(request)
     wishlist=WishList(request)
     products=cart.get_products()
+
+    if Product.objects.filter(id=product_id).exists():
+            wishlist.remove(product_id)
+            wishlist.session.modified=True
+            cart.add(product_id)
+            cart.session.modified=True
+            return redirect('wishlist')
     
     data={
         'path':"Savatcha",
@@ -128,9 +133,13 @@ class CartPageView(View):
  
  def post(self,request,product_id):
     cart=Cart(request)
+    wishlist=WishList(request)
     
     if Product.objects.filter(id=product_id).exists():
+        wishlist.remove(product_id)
+        wishlist.session.modified=True
         cart.add(product_id)
+        cart.session.modified=True
 
         data={
             "message":"savatga qoshildi",
@@ -146,6 +155,7 @@ class WishlistView(View):
  
         if Product.objects.filter(id=product_id).exists():
             wishlist.add(product_id)
+            wishlist.session.modified=True
 
         data={
             "message":"savatga qoshildi",
@@ -155,10 +165,14 @@ class WishlistView(View):
         return JsonResponse(data)
 
 
-    def get(self,request):
+    def get(self,request,product_id=None):
 
         wishlist=WishList(request)
         cart=Cart(request)
+
+        if Product.objects.filter(id=product_id).exists():
+            wishlist.add(product_id)
+            wishlist.session.modified=True
     
         data={
             "wish_products":wishlist.get_products(),
@@ -171,16 +185,33 @@ class WishlistView(View):
 
 
 class RemoveCartView(View):
-    def post(self,request,product_id):
-        cart=Cart(request)
+    def get(self, request, product_id):
+        cart = Cart(request)
         cart.remove(product_id)
         return redirect("cart")
 
+
         
 class RemoveWishView(View):
-    def post(self,request,product_id):
+    def get(self,request,product_id):
         wishlist=WishList(request)
         wishlist.remove(product_id)
         return redirect("wishlist")
  
+
+class DetailAddProductView(View):
+    def get(self, request, id=None):
+        cart = Cart(request)
+        if Product.objects.filter(id=id).exists():
+            cart.add(id)
+            cart.session.modified = True
+        return redirect('details', id=id)  # ✅ id qo‘shildi
+    
+class DetailAddToWishlistView(View):
+    def get(self, request, id=None):
+        wishlist = WishList(request)
+        if Product.objects.filter(id=id).exists():
+            wishlist.add(id)
+            wishlist.session.modified = True
+        return redirect('details', id=id)  # ✅ id qo‘shildi
 
