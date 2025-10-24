@@ -117,7 +117,6 @@ class AccountView(View):
  def post(self,request):
         user_id=request.user.id
 
-        if 
         form=ResetForm(request.POST)
         form1=ResetPasswordForm(request.POST)
 
