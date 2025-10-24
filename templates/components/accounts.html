@@ -8,7 +8,7 @@
           <i class="fi fi-rs-shopping-bag"></i> Orders
         </p>
         <p class="account__tab" data-target="#update-profile">
-          <i class="fi fi-rs-user"></i> Update Profile
+          <i class="fi fi-rs-user active-tab"></i> Update Profile
         </p>
         <p class="account__tab" data-target="#change-password">
           <i class="fi fi-rs-settings-sliders"></i> Change Password
@@ -16,7 +16,7 @@
         <p class="account__tab"><i class="fi fi-rs-exit"></i> Logout</p>
       </div>
       <div class="tabs__content">
-        <div class="tab__content active-tab" content id="dashboard">
+        <div class="tab__content " content id="dashboard">
           <h3 class="tab__header">Assalomu Alaykum , {{request.user.username}}</h3>
           <div class="tab__body">
             <p class="tab__description">
@@ -52,15 +52,17 @@
             </table>
           </div>
         </div>
-        <div class="tab__content" content id="update-profile">
+        <div class="tab__content active-tab" content id="update-profile">
           <h3 class="tab__header">Update Profile</h3>
           <div class="tab__body">
-            <form class="form grid">
-              <input
-                type="text"
-                placeholder="Username"
-                class="form__input"
-              />
+            <form class="form grid" method="post">
+
+                {% csrf_token %}
+                {% for field in form %}
+                  {{field.errors}}
+                  {{field}}
+                {% endfor %}
+             
               <div class="form__btn">
                 <button class="btn btn--md">Save</button>
               </div>
@@ -70,21 +72,24 @@
         <div class="tab__content" content id="change-password">
           <h3 class="tab__header">Change Password</h3>
           <div class="tab__body">
-            <form class="form grid">
+            <form class="form grid" method="post">
               <input
                 type="password"
                 placeholder="Current Password"
                 class="form__input"
+                name="current_password"
               />
               <input
                 type="password"
                 placeholder="New Password"
                 class="form__input"
+                name="new_password"
               />
               <input
                 type="password"
                 placeholder="Confirm Password"
                 class="form__input"
+                name="new_password2"
               />
               <div class="form__btn">
                 <button class="btn btn--md">Save</button>

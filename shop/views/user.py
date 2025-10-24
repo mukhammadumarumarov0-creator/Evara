@@ -69,4 +69,4 @@ class CreatAccountView(View):
             }
             return render(request,"shop/register.html",context=message)
     
- 
+

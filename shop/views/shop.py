@@ -6,7 +6,8 @@ from shop.views import WishList,Cart
 from django.db.models import Q
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import View
-
+from shop.forms import ResetForm,ResetPasswordForm
+from django.contrib.auth.models import User
 
 
 class DashboardView(View):
@@ -99,17 +100,56 @@ class AccountView(View):
          
        }
        orders.append(data)
+
+    form=ResetForm()
+    form1=ResetPasswordForm()
       
     
     data={
-       
+       "form":form,
        "orders":orders,
        'path':"Profilim",
        'cart_count':cart.get_count(),
        'wishlist_count':wishlist.get_count(),
     }
     return render(request,"shop/accounts.html",data)
+ 
+ def post(self,request):
+        user_id=request.user.id
 
+        if 
+        form=ResetForm(request.POST)
+        form1=ResetPasswordForm(request.POST)
+
+
+        if form.is_valid():
+            first_name=request.POST.get('first_name')
+            last_name=request.POST.get('last_name')
+            username=request.POST.get('username')
+
+            user=User.objects.get(id=user_id)
+            user.first_name=first_name
+            user.last_name=last_name
+            user.username=username
+            user.save()
+            return redirect('dashboard')
+        
+        else:
+            message={
+                "path":'Profilim',
+                "form":form
+            }
+            return render(request,"shop/accounts.html",context=message)
+
+
+
+        
+        
+
+
+
+
+        
 
       
      
