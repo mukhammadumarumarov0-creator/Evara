@@ -1,7 +1,7 @@
 from django.contrib import admin
-from shop.models import Category,Product,Order,OrderItem
+from shop.models import Category,Product,Order,OrderItem,Review
 
-admin.site.register([Category,OrderItem,Order])
+admin.site.register([Category,OrderItem,Order,Review])
 
 class ProductAdmin(admin.ModelAdmin):
     model=Product

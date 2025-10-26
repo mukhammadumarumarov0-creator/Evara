@@ -75,8 +75,7 @@ class RegisterForm(forms.Form):
          if value != value2:
             raise forms.ValidationError('Passwordlar bir xil bolishi kerak')
          
-         if re.fullmatch(r'["A-Za-z0-9"]{8}',value) is None:
-           raise forms.ValidationError("Password kamida 8 ta katta,kichik hariflardan va sondan iborat bolishi kerak")
+         
          
 
          return value
@@ -124,22 +123,27 @@ class ResetForm(forms.Form):
       
       return value
    
-class ResetPassword(forms.Form):
-   current_password=forms.CharField(widget=forms.PasswordInput(attrs={'class':"form__input",'placeholder':'Current password'}),required=True)
-   new_password=forms.CharField(widget=forms.PasswordInput(attrs={'class':"form__input",'placeholder':'New password'}),required=True)
-   new_password2=forms.CharField(widget=forms.PasswordInput(attrs={'class':"form__input",'placeholder':'Reset password'}),required=True)
 
 
 
+
+
+import re
+from django import forms
 
 class ResetPasswordForm(forms.Form):
-    current_password = forms.CharField(widget=forms.PasswordInput)
-    new_password = forms.CharField(widget=forms.PasswordInput)
-    new_password2 = forms.CharField(widget=forms.PasswordInput)
+    current_password = forms.CharField(widget=forms.PasswordInput(attrs={
+        'class': 'form__input', 'placeholder': 'Current password'
+    }))
+    new_password = forms.CharField(widget=forms.PasswordInput(attrs={
+        'class': 'form__input', 'placeholder': 'New password'
+    }))
+    new_password2 = forms.CharField(widget=forms.PasswordInput(attrs={
+        'class': 'form__input', 'placeholder': 'Confirm new password'
+    }))
 
     def __init__(self, *args, **kwargs):
-        # Foydalanuvchini tashqaridan olish uchun
-        self.user = kwargs.pop('user', None)
+        self.user = kwargs.pop('user', None)  # <<== bu juda muhim
         super().__init__(*args, **kwargs)
 
     def clean(self):
@@ -148,7 +152,7 @@ class ResetPasswordForm(forms.Form):
         n_password = cleaned_data.get('new_password')
         n_password2 = cleaned_data.get('new_password2')
 
-        # 1️⃣ Tekshirish: foydalanuvchi obyekt mavjud bo‘lishi kerak
+        # 1️⃣ user kelganini tekshirish
         if not self.user:
             raise forms.ValidationError("Foydalanuvchi aniqlanmadi.")
 
@@ -156,18 +160,17 @@ class ResetPasswordForm(forms.Form):
         if not self.user.check_password(c_password):
             raise forms.ValidationError("Joriy parol noto‘g‘ri.")
 
-        # 3️⃣ Yangi parollar bir xil bo‘lishi kerak
+        # 3️⃣ Parollarni solishtirish
         if n_password != n_password2:
             raise forms.ValidationError("Yangi parollar bir xil bo‘lishi kerak.")
 
-        # 4️⃣ Joriy parol bilan yangi parol bir xil bo‘lmasligi kerak
+        # 4️⃣ Eski bilan yangi parol bir xil emasligini tekshirish
         if c_password == n_password:
             raise forms.ValidationError("Yangi parol joriy parol bilan bir xil bo‘lishi mumkin emas.")
 
-        # 5️⃣ Parol formatini tekshirish (kamida 8ta belgi)
-        if re.fullmatch(r'[A-Za-z0-9]{8,}', n_password) is None:
-            raise forms.ValidationError(
-                "Parol kamida 8 ta belgidan iborat bo‘lishi kerak va faqat harf/raqamdan tashkil topgan bo‘lishi kerak."
-            )
+        # 5️⃣ Eng oddiy validatsiya (kamida 8 ta belgi)
+        if len(n_password) < 8:
+            raise forms.ValidationError("Parol kamida 8 ta belgidan iborat bo‘lishi kerak.")
 
         return cleaned_data
+

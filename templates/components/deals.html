@@ -1,74 +1,18 @@
+{% load static %}
 <section class="deals section">
-    <div class="deals__container container grid">
-      <div class="deals__item">
-        <div class="deals__group">
-          <h3 class="deals__brand">Deals of the Day</h3>
-          <span class="deals__category">Limited quantities</span>
-        </div>
-        <h4 class="deals__title">Summer Collection New Modern Design</h4>
-        <div class="deals__price flex">
-          <span class="new__price">$139.00</span>
-          <span class="old__price">$160.99</span>
-        </div>
-        <div class="deals__group">
-          <p class="deals__countdown-text">Hurry Up! Offer Ends In:</p>
-          <div class="countdown">
-            <div class="countdown__amount">
-              <p class="countdown__period">02</p>
-              <span class="unit">Days</span>
-            </div>
-            <div class="countdown__amount">
-              <p class="countdown__period">22</p>
-              <span class="unit">Hours</span>
-            </div>
-            <div class="countdown__amount">
-              <p class="countdown__period">57</p>
-              <span class="unit">Mins</span>
-            </div>
-            <div class="countdown__amount">
-              <p class="countdown__period">28</p>
-              <span class="unit">Sec</span>
-            </div>
-          </div>
-        </div>
-        <div class="deals__btn">
-          <a href="details.html" class="btn btn--md">Shop Now</a>
-        </div>
-      </div>
-      <div class="deals__item">
-        <div class="deals__group">
-          <h3 class="deals__brand">Women Clothing</h3>
-          <span class="deals__category">Shirts & Bag</span>
-        </div>
-        <h4 class="deals__title">Try Something new on vacation</h4>
-        <div class="deals__price flex">
-          <!-- <span class="new__price">$178.00</span> -->
-          <!-- <span class="old__price">$256.99</span> -->
-        </div>
-        <div class="deals__group">
-          <!-- <p class="deals__countdown-text">Hurry Up! Offer Ends In:</p> -->
-          <div class="countdown">
-            <div class="countdown__amount">
-              <p class="countdown__period">02</p>
-              <span class="unit">Days</span>
-            </div>
-            <div class="countdown__amount">
-              <p class="countdown__period">22</p>
-              <span class="unit">Hours</span>
-            </div>
-            <div class="countdown__amount">
-              <p class="countdown__period">57</p>
-              <span class="unit">Mins</span>
-            </div>
-            <div class="countdown__amount">
-              <p class="countdown__period">28</p>
-              <span class="unit">Sec</span>
-            </div>
-          </div>
-        </div>
-        <div class="deals__btn">
-          <a href="details.html" class="btn btn--md">Shop Now</a>
-        </div>
+  <div class="deals__container container">
+    <div class="deals__slider">
+      <img src="https://stockmann.ru/istk/s5b9F1i-8YWTxlwSzJ0PiSWnBOIzzmoU7WVgrQdaEJw/rs:fill:1416:786:1/g:no/bG9jYWw6Ly8vdXBsb2FkLy9jbXMvc3RhdGljL2Zhc2hpb24tYmxvZy9hcnRpY2xlL21vZG55ZS1tdXpoc2tpZS1rb3N0eXVteS9mQ0wzbFlpczZzV2RMMjQ2YVI1VXRINjZPYlRDa2VGd1huZ3Q3YmpqLnBuZw.jpg" class="deals__img active" alt="Deal 1">
+      <img src="{% static 'img/carousel-2.jpg' %}" class="deals__img" alt="Deal 2">
+      <img src="https://moder.ru/upload/iblock/2d2/znx0u38s6fo0di8jhnwsxzekppar64bv/FOT_8003.jpg" class="deals__img" alt="Deal 3">
+
+      <div class="deals__content">
+        <h3 class="deals__brand">🔥 Deals of the Day 🔥</h3>
+        <h4 class="deals__title"></h4>
+        <a href="{% url 'shop' %}" class="btn btn--md">Shop Now</a>
       </div>
     </div>
-  </section>
+  </div>
+</section>
+
+

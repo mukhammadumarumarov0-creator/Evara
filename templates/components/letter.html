@@ -1,23 +1,26 @@
+{% load static %}
 <section class="newsletter section home__newsletter">
     <div class="newsletter__container container grid">
       <h3 class="newsletter__title flex">
         <img
-          src="./assets/img/icon-email.svg"
+          src="{% static 'img/logo.svg' %}"
           alt=""
-          class="newsletter__icon"
+          class="logo"
         />
-        Sign in to Newsletter
       </h3>
-      <p class="newsletter__description">
-        ...and receive $25 coupon for first shopping.
+      <p class="newsletter__title flex">
+      Royhatdan o'ting va ozingizni imkoniyatlaringizni kengaytiring
       </p>
-      <form action="" class="newsletter__form">
-        <input
-          type="text"
-          placeholder="Enter Your Email"
-          class="newsletter__input"
-        />
-        <button type="submit" class="newsletter__btn">Subscribe</button>
-      </form>
     </div>
   </section>
+
+  <style>
+    .logo {
+      display: block;       /* tashqi whitespace olib tashlash */
+      width: 150px;         /* kerakli kenglik — o'zgartiring */
+      height: auto;         /* proporsiya saqlansin */
+      max-height: 70px;     /* balandlikni limitlash */
+      object-fit: contain;  /* rasmni buzmaslik uchun */
+    }
+ 
+  </style>

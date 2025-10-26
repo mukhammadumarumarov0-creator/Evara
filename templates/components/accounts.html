@@ -13,7 +13,7 @@
         <p class="account__tab" data-target="#change-password">
           <i class="fi fi-rs-settings-sliders"></i> Change Password
         </p>
-        <p class="account__tab"><i class="fi fi-rs-exit"></i> Logout</p>
+        <a href="{% url 'logout_user' %}"><p class="account__tab"><i class="fi fi-rs-exit"></i> Logout</p></a>
       </div>
       <div class="tabs__content">
         <div class="tab__content " content id="dashboard">
@@ -64,7 +64,7 @@
                 {% endfor %}
              
               <div class="form__btn">
-                <button class="btn btn--md">Save</button>
+                <button class="btn btn">Save</button>
               </div>
             </form>
           </div>
@@ -72,7 +72,8 @@
         <div class="tab__content" content id="change-password">
           <h3 class="tab__header">Change Password</h3>
           <div class="tab__body">
-            <form class="form grid" method="post">
+            <form class="form grid" method="post" action="{% url 'password' %}">
+              {% csrf_token %}
               <input
                 type="password"
                 placeholder="Current Password"
@@ -92,7 +93,7 @@
                 name="new_password2"
               />
               <div class="form__btn">
-                <button class="btn btn--md">Save</button>
+                <button class="btn btn" type="submit">Save</button>
               </div>
             </form>
           </div>

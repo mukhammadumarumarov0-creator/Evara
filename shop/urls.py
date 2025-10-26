@@ -1,8 +1,9 @@
 from django.urls import path,include
 from shop.views.user import LoginUserView,LogOutView,CreatAccountView
-from shop.views.shop import DashboardView,DetailsView,ShopView,SelectedItemsView,AccountView
+from shop.views.shop import DashboardView,DetailsView,ShopView,SelectedItemsView,AccountView,Password,ReviewView
 from shop.views.cart import CartPageView,WishlistView,RemoveCartView,RemoveWishView,DetailAddProductView,DetailAddToWishlistView
 from shop.views.order import GetCheckOutView
+
 
 urlpatterns = [
     path("",DashboardView.as_view(),name="dashboard"),
@@ -25,6 +26,10 @@ urlpatterns = [
     path("wishlist/remove/<int:product_id>/",RemoveWishView.as_view(),name="wishlist_remove"),
     path("details/add/<int:id>/",DetailAddProductView.as_view(),name="add_product_from_details"),
     path("details/wishlist/add/<int:id>/",DetailAddToWishlistView.as_view(),name="add_product_from_details_to_wishlist"),
+    path("password/",Password.as_view(),name="password"),
+    path("review/<int:id>",ReviewView.as_view(),name="review"),
+
+
 
 
 
