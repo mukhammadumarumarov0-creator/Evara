@@ -23,7 +23,7 @@ class DashboardView(View):
             product=Product.objects.filter(Q(name__icontains=q) | Q(description__icontains=q))
             data={
             'path':"Mahsulotlar",
-            "products":product,
+            "product":product,
             'product_count':len(product),
             'cart_count':cart.get_count(),
             'wishlist_count':wishlist.get_count(),
@@ -54,7 +54,7 @@ class DashboardView(View):
         return render(request,"shop/index.html" ,context=data)
 
 
-class DetailsView(LoginRequiredMixin,View):
+class DetailsView(View):
  def get(self,request,id=None):
     product=get_object_or_404(Product,id=id)
     products=Product.objects.all()
